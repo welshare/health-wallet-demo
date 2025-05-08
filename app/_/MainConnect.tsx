@@ -1,38 +1,54 @@
 "use client";
-import { sequence } from '0xsequence'
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { SequenceConnect, useOpenConnectModal, useSignInEmail } from "@0xsequence/connect";
+import { SequenceWalletProvider, useOpenWalletModal } from '@0xsequence/wallet-widget';
+import { useAccount, useDisconnect } from "wagmi";
+import { waasConfig } from "./waas/config";
+
+
+const ConnectButton = () => {
+  const {isConnected} = useAccount()
+
+  const { disconnect } = useDisconnect()
+  const {setOpenConnectModal} = useOpenConnectModal()
+  
+  if (isConnected) {
+    return <Button onClick={() => disconnect()}>disconnect</Button>
+  }
+
+  return (
+    <>
+      <Button onClick={() => setOpenConnectModal(true)}>Connect</Button>
+    </>
+  )
+}
+
+
+const WagmiComponent = () => {
+  const {chain, address, isConnected} = useAccount()
+  
+  const email = useSignInEmail()
+  const {setOpenWalletModal} = useOpenWalletModal()
+  return (
+    <div>
+      <p>Connected Address: {address}</p>
+      <p>Chain: {chain?.id}</p>
+      <p>Email: {email}</p>
+      <Button onClick={() => setOpenWalletModal(true, {
+        
+      })}>manage</Button>
+    </div>
+  );
+}
 
 export default function MainConnect() {
-
-  sequence.initWallet(process.env.NEXT_PUBLIC_ACCESS_KEY!, {defaultNetwork: 'base-sepolia'})
-    
-    const [isLoggedIn, setIsLoggedIn] = useState<any>(false)
-  
-    const signIn = async () => {
-      const wallet = sequence.getWallet()
-      
-      const details = await wallet.connect({app: 'Long Covid Labs'})
-      console.log('details', wallet, details)
-      if(details.connected){
-        setIsLoggedIn(true)
-      }
-    }
-  
-    useEffect(() => {
-      console.log('isLoggedIn', isLoggedIn)
-    },[isLoggedIn])
-  
-  
     return (
-      <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-        <main className="flex flex-col items-center sm:items-start">
-        {isLoggedIn && <div className="sign-out-button" onClick={()=> setIsLoggedIn(false)}>sign out</div>}
-        <div className="container">
-        {!isLoggedIn ? <Button onClick={() => signIn()}>sign in</Button> : 'isConnected'}
-        </div>
-        </main>
-      </div>
+      <SequenceConnect config={waasConfig} >
+        <SequenceWalletProvider>
+          <ConnectButton />
+          <WagmiComponent />
+        </SequenceWalletProvider>
+      </SequenceConnect>
     );
   }
   
