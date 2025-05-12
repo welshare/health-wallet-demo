@@ -1,19 +1,12 @@
 "use client";
 
-import {
-	default as WalletKit
-} from "@reown/walletkit";
+import { mountHandlers } from "@/lib/wallet-connect";
+import { default as WalletKit, WalletKitTypes } from "@reown/walletkit";
 import { Core } from "@walletconnect/core";
 
-import React, {
-	createContext,
-	useContext,
-	useEffect,
-	useState
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
-import { mountHandlers } from "../hooks/wallet-connect";
 
 interface WalletKitContextType {
   walletKit?: WalletKit;
@@ -25,38 +18,56 @@ export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [walletKit, setWalletKit] = useState<WalletKit>();
-	
+
   const { signMessageAsync } = useSignMessage();
-	const { data: walletClient } = useWalletClient();
+  const { data: walletClient } = useWalletClient();
   const { address, chainId, isConnected } = useAccount();
 
-	
   useEffect(() => {
-		if (!isConnected || !walletClient || !address) {setWalletKit(undefined); return }
+    if (!isConnected || !walletClient || !address) {
+      setWalletKit(undefined);
+      return;
+    }
+    let handlers: Record<string, any>;
+    let _walletKit: WalletKit;
 
     (async function initialiseWalletKit() {
       try {
-				console.log("initialising walletkit", isConnected, walletClient, address)
+        console.log(
+          "initialising walletkit",
+          isConnected,
+          walletClient,
+          address
+        );
         const core = new Core({
           projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
         });
-        const _walletKit = await WalletKit.init({
+
+        _walletKit = await WalletKit.init({
           core,
           metadata: {
             name: "DAO Governance Wallet", // replace with your own name
             description: "Allows DAO members to vote on proposals", // replace with your desc
             url: "http://localhost:3000", // replace with your url
-            icons: [], // add you wallet's icon URL
+            icons: [], // add your wallet's icon URL
           },
         });
         console.log("WalletKit initialised", _walletKit);
-				mountHandlers(_walletKit, walletClient, address)
+        handlers = mountHandlers(_walletKit, walletClient, address);
         setWalletKit(_walletKit);
       } catch (error) {
         console.error("Error initialising WalletKit", error);
       }
     })();
-		
+
+    return () => {
+      if (handlers && _walletKit) {
+        console.log("unmounting handlers", handlers, _walletKit);
+        Object.keys(handlers).map((key: string) => {
+          _walletKit.off(key as WalletKitTypes.Event, handlers[key]);
+        });
+      }
+    };
   }, [isConnected, walletClient, address]);
 
   return (

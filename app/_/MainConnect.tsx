@@ -10,7 +10,7 @@ import {
   SequenceWalletProvider,
   useOpenWalletModal,
 } from "@0xsequence/wallet-widget";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useChainId, useDisconnect } from "wagmi";
 import { WalletKitProvider } from "../context/WalletkitContext";
 import { waasConfig } from "./waas/config";
 
@@ -32,14 +32,15 @@ const ConnectButton = () => {
 };
 
 const WagmiComponent = () => {
-  const { chain, address, isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const chainId = useChainId();
 
   const email = useSignInEmail();
   const { setOpenWalletModal } = useOpenWalletModal();
   return (
     <div>
       <p>Connected Address: {address}</p>
-      <p>Chain: {chain?.id}</p>
+      <p>Chains: {chainId}</p>
       <p>Email: {email}</p>
       <Button onClick={() => setOpenWalletModal(true, {})}>manage</Button>
     </div>

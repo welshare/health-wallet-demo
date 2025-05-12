@@ -8,7 +8,7 @@ export const mountHandlers = (
   walletKit: WalletKit,
   walletClient: WalletClient,
   address: Address
-) => {
+): Record<string, any> => {
   const onSessionProposal = async ({
     id,
     params,
@@ -16,7 +16,7 @@ export const mountHandlers = (
     const namespaces = supportedNamespaces(address);
 
     console.log("onSessionProposal", id, namespaces, params);
-
+    
     try {
       const approvedNamespaces = buildApprovedNamespaces({
         proposal: params,
@@ -27,7 +27,8 @@ export const mountHandlers = (
         id: id as number,
         namespaces: approvedNamespaces,
       });
-      console.log("approveSession result", result);
+      const sessions = walletKit.getActiveSessions(); 
+      console.log("approveSession result", result, sessions);
     } catch (error) {
       console.error("Error approving session:", error);
       await walletKit.rejectSession({
@@ -68,5 +69,10 @@ export const mountHandlers = (
 
   walletKit.on("session_proposal", onSessionProposal);
   walletKit.on("session_request", onSessionRequest);
+  
   console.log("mounted handlers");
+  return {
+    "session_proposal": onSessionProposal,
+    "session_request": onSessionRequest
+  }
 };

@@ -1,4 +1,5 @@
-import { createConfig, getDefaultConnectors } from "@0xsequence/connect";
+"use client"
+import { createConfig } from "@0xsequence/connect";
 
 const projectAccessKey = process.env.NEXT_PUBLIC_ACCESS_KEY as string
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
@@ -14,8 +15,8 @@ const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
 export const waasConfig = createConfig("waas" /*or, 'universal'*/, {
   appName: "lcl",
   projectAccessKey,
-  chainIds: [1, 84532],
-  defaultChainId: 84532,
+  chainIds: [1, 84532,11155111],
+  defaultChainId: 11155111,
   wagmiConfig: {
     ssr: true,
   },
