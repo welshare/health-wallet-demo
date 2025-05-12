@@ -10,10 +10,12 @@ import { useCallback, useEffect, useState } from "react";
 import { hexToString } from "viem";
 import { useWalletClient } from "wagmi";
 
-export const WalletKitContext = (props: { children: React.ReactNode, walletKit: IWalletKit }) => {
-  
-  const {walletKit} = props;
-  const {data: walletClient} = useWalletClient();
+export const WalletKitContext = (props: {
+  children: React.ReactNode;
+  walletKit: IWalletKit;
+}) => {
+  const { walletKit } = props;
+  const { data: walletClient } = useWalletClient();
   const [, setActiveSessions] = useState<Record<string, any>>({});
   const [dialogState, setDialogState] = useState<ApprovalDialogState>({
     proposalOpen: false,

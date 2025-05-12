@@ -6,6 +6,7 @@ import { createConfig } from '@privy-io/wagmi';
 
 export const wagmiConfig = createConfig({
   chains: [mainnet, sepolia, baseSepolia],
+  connectors: [],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),

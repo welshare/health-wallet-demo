@@ -1,3 +1,6 @@
+"use client";
+
+
 import { getWalletKit } from "@/components/context/WalletKitGlobals";
 import { Button } from "@/components/ui/button";
 import {
