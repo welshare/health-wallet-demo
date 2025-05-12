@@ -10,9 +10,12 @@ import {
   SequenceWalletProvider,
   useOpenWalletModal,
 } from "@0xsequence/wallet-widget";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
 import { WalletKitProvider } from "../context/WalletkitContext";
 import { waasConfig } from "./waas/config";
+
+const queryClient = new QueryClient();
 
 const ConnectButton = () => {
   const { isConnected } = useAccount();
@@ -49,14 +52,16 @@ const WagmiComponent = () => {
 
 export default function MainConnect() {
   return (
-    <SequenceConnect config={waasConfig}>
-      <SequenceWalletProvider>
-        <WalletKitProvider>
-          <ConnectButton />
-          <WagmiComponent />
-          <WalletConnectDialog />
-        </WalletKitProvider>
-      </SequenceWalletProvider>
-    </SequenceConnect>
+    <QueryClientProvider client={queryClient}>
+      <SequenceConnect config={waasConfig}>
+        <SequenceWalletProvider>
+          <WalletKitProvider>
+            <ConnectButton />
+            <WagmiComponent />
+            <WalletConnectDialog />
+          </WalletKitProvider>
+        </SequenceWalletProvider>
+      </SequenceConnect>
+    </QueryClientProvider>
   );
 }
