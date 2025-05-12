@@ -1,6 +1,7 @@
-import { useWalletKit } from "@/app/context/WalletkitContext"
+"use client";
+import { useWalletKit } from "@/app/context/WalletkitContext";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +10,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { useState } from "react"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 export function WalletConnectDialog() {
   const [connectionString, setConnectionString] = useState<string>('')
@@ -25,12 +26,16 @@ export function WalletConnectDialog() {
   //   //onSubmit(connectionString)
   //   //setOpen(false)
   
-  const onConnect = () => { 
+  const onConnect = async () => { 
     console.log("onConnect", walletKit)
     if (!walletKit) return
-    console.log("PAIRING", connectionString)
-
-    walletKit.pair({ uri: connectionString })
+    try {
+      console.log("PAIRING", connectionString)
+      await walletKit.core.pairing.pair({ uri: connectionString })
+    } catch (error) {
+      console.error("Error pairing wallet:", error)
+    }
+   
     //setOpen(false)
   }
 
