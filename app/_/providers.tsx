@@ -1,25 +1,34 @@
 "use client";
-import {
-  SequenceConnect
-} from "@0xsequence/connect";
-import {
-  SequenceWalletProvider
-} from "@0xsequence/wallet-widget";
+import { PrivyProvider } from "@privy-io/react-auth";
+import { WagmiProvider } from "@privy-io/wagmi";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { WalletKitGlobals } from "@/components/context/WalletKitGlobals";
-import { waasConfig } from "./waas/config";
+import { wagmiConfig } from "./privy/config";
+//import { waasConfig } from "./waas/config";
 
+const privyConfig = {};
 const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SequenceConnect config={waasConfig}>
-        <SequenceWalletProvider>
+    <PrivyProvider
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      config={privyConfig}
+    >
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiConfig}>
           <WalletKitGlobals>{children}</WalletKitGlobals>
-        </SequenceWalletProvider>
-      </SequenceConnect>
-    </QueryClientProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
+    </PrivyProvider>
   );
 };
+
+{
+  /* </SequenceWalletProvider>
+<SequenceConnect config={waasConfig}>
+<SequenceWalletProvider>
+</SequenceConnect> */
+}

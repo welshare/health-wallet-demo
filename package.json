@@ -12,6 +12,8 @@
     "0xsequence": "^2.3.7",
     "@0xsequence/connect": "^5.2.4",
     "@0xsequence/wallet-widget": "^5.2.4",
+    "@privy-io/react-auth": "^2.13.1",
+    "@privy-io/wagmi": "^1.0.3",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-label": "^2.1.6",
     "@radix-ui/react-slot": "^1.2.2",

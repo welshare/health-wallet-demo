@@ -48,6 +48,11 @@ export const WalletKitGlobals = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const onInitialize = useCallback(async () => {
+    if (initialized) {
+      console.log("already initialized");
+      return;
+    }
+
     try {
       setIsLoading(true);
       await initializeWallet();
@@ -60,7 +65,7 @@ export const WalletKitGlobals = ({
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [initialized]);
 
   useEffect(() => {
     if (!initialized) {
