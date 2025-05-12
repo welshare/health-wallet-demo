@@ -26,7 +26,7 @@ export function WalletConnectDialog() {
   //   //setOpen(false)
   
   const onConnect = () => { 
-    console.log("onConnect", walletKit, "foo")
+    console.log("onConnect", walletKit)
     if (!walletKit) return
     console.log("PAIRING", connectionString)
 

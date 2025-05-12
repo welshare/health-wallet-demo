@@ -1,12 +1,12 @@
 "use client";
 
-import { mountHandlers } from "@/lib/wallet-connect";
-import { default as WalletKit, WalletKitTypes } from "@reown/walletkit";
+import { default as WalletKit } from "@reown/walletkit";
 import { Core } from "@walletconnect/core";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
+import { WalletKitHandlers } from "./WalletKitHandlers";
 
 interface WalletKitContextType {
   walletKit?: WalletKit;
@@ -53,25 +53,19 @@ export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         });
         console.log("WalletKit initialised", _walletKit);
-        handlers = mountHandlers(_walletKit, walletClient, address);
         setWalletKit(_walletKit);
       } catch (error) {
         console.error("Error initialising WalletKit", error);
       }
     })();
 
-    return () => {
-      if (handlers && _walletKit) {
-        console.log("unmounting handlers", handlers, _walletKit);
-        Object.keys(handlers).map((key: string) => {
-          _walletKit.off(key as WalletKitTypes.Event, handlers[key]);
-        });
-      }
-    };
   }, [isConnected, walletClient, address]);
 
   return (
     <WalletKitContext.Provider value={{ walletKit }}>
+      {walletKit && walletClient && address && ( 
+        <WalletKitHandlers walletKit={walletKit} walletClient={walletClient} address={address} />
+      )}
       {children}
     </WalletKitContext.Provider>
   );

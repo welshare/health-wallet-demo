@@ -2,14 +2,16 @@ import { supportedNamespaces } from "@/lib/namespaces";
 
 import { default as WalletKit, WalletKitTypes } from "@reown/walletkit";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
+import { useCallback, useEffect } from "react";
 import { Address, hexToString, WalletClient } from "viem";
 
-export const mountHandlers = (
+export const WalletKitHandlers = (props: {
   walletKit: WalletKit,
   walletClient: WalletClient,
   address: Address
-): Record<string, any> => {
-  const onSessionProposal = async ({
+}) => {
+  const { walletKit, walletClient, address } = props;
+  const onSessionProposal = useCallback(async ({
     id,
     params,
   }: WalletKitTypes.SessionProposal) => {
@@ -36,9 +38,9 @@ export const mountHandlers = (
         reason: getSdkError("USER_REJECTED"),
       });
     }
-  };
+  }, [walletKit, walletClient, address]);
 
-  const onSessionRequest = async (event: WalletKitTypes.SessionRequest) => {
+  const onSessionRequest = useCallback(async (event: WalletKitTypes.SessionRequest) => {
     const { topic, params, id } = event;
     const { request } = params;
     // Get the message to sign
@@ -65,14 +67,18 @@ export const mountHandlers = (
         jsonrpc: "2.0",
       },
     });
-  };
+  }, [walletKit, walletClient, address]);
 
-  walletKit.on("session_proposal", onSessionProposal);
-  walletKit.on("session_request", onSessionRequest);
+  useEffect(() => {
+    console.log("mounting handlers");
+    walletKit.on("session_proposal", onSessionProposal);
+    walletKit.on("session_request", onSessionRequest);
+    return () => {
+      console.log("unmounting handlers");
+      walletKit.off("session_proposal", onSessionProposal);
+      walletKit.off("session_request", onSessionRequest);
+    }
+  }, [walletKit, walletClient, address]);
   
-  console.log("mounted handlers");
-  return {
-    "session_proposal": onSessionProposal,
-    "session_request": onSessionRequest
-  }
+  return <></>
 };
