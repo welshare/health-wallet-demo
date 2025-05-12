@@ -1,21 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { WalletConnectDialog } from "@/components/wallect-connect-dialog";
-import {
-  SequenceConnect,
-  useOpenConnectModal,
-  useSignInEmail,
-} from "@0xsequence/connect";
-import {
-  SequenceWalletProvider,
-  useOpenWalletModal,
-} from "@0xsequence/wallet-widget";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useOpenConnectModal, useSignInEmail } from "@0xsequence/connect";
+import { useOpenWalletModal } from "@0xsequence/wallet-widget";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
-import { WalletKitProvider } from "../context/WalletkitContext";
-import { waasConfig } from "./waas/config";
-
-const queryClient = new QueryClient();
 
 const ConnectButton = () => {
   const { isConnected } = useAccount();
@@ -35,7 +23,7 @@ const ConnectButton = () => {
 };
 
 const WagmiComponent = () => {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const chainId = useChainId();
 
   const email = useSignInEmail();
@@ -52,16 +40,10 @@ const WagmiComponent = () => {
 
 export default function MainConnect() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SequenceConnect config={waasConfig}>
-        <SequenceWalletProvider>
-          <WalletKitProvider>
-            <ConnectButton />
-            <WagmiComponent />
-            <WalletConnectDialog />
-          </WalletKitProvider>
-        </SequenceWalletProvider>
-      </SequenceConnect>
-    </QueryClientProvider>
+    <>
+      <ConnectButton />
+      <WagmiComponent />
+      <WalletConnectDialog />
+    </>
   );
 }

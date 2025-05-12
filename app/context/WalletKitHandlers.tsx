@@ -56,7 +56,7 @@ export const WalletKitHandlers = (props: {
       setDialogState((prev) => ({ ...prev, proposalOpen: true }));
       setProposal(proposal);
     },
-    [walletKit, walletClient, address]
+    []
   );
 
   const approveProposal = useCallback(async () => {
@@ -85,7 +85,7 @@ export const WalletKitHandlers = (props: {
     } finally {
       setDialogState((prev) => ({ ...prev, proposalOpen: false }));
     }
-  }, [proposal]);
+  }, [proposal, address, walletKit]);
 
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
@@ -105,6 +105,7 @@ export const WalletKitHandlers = (props: {
           account: address,
         });
 
+        console.log("signed message", signature);
         // once you have signed, return the signature
         await walletKit.respondSessionRequest({
           topic: topic as string,
@@ -143,7 +144,7 @@ export const WalletKitHandlers = (props: {
       walletKit.off("session_request", onSessionRequest);
       walletKit.off("session_delete", () => {});
     };
-  }, [walletKit, walletClient, address]);
+  }, [walletKit, walletClient, address, onSessionProposal, onSessionRequest]);
 
   return (
     <Dialog

@@ -5,7 +5,7 @@ import { Core } from "@walletconnect/core";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { useAccount, useSignMessage, useWalletClient } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { WalletKitHandlers } from "./WalletKitHandlers";
 
 interface WalletKitContextType {
@@ -19,16 +19,16 @@ export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [walletKit, setWalletKit] = useState<WalletKit>();
 
-  const { signMessageAsync } = useSignMessage();
+  //const { signMessageAsync } = useSignMessage();
   const { data: walletClient } = useWalletClient();
-  const { address, chainId, isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   useEffect(() => {
     if (!isConnected || !walletClient || !address) {
       setWalletKit(undefined);
       return;
     }
-    let handlers: Record<string, any>;
+
     let _walletKit: WalletKit;
 
     (async function initialiseWalletKit() {
@@ -58,13 +58,16 @@ export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error initialising WalletKit", error);
       }
     })();
-
   }, [isConnected, walletClient, address]);
 
   return (
     <WalletKitContext.Provider value={{ walletKit }}>
-      {walletKit && walletClient && address && ( 
-        <WalletKitHandlers walletKit={walletKit} walletClient={walletClient} address={address} />
+      {walletKit && walletClient && address && (
+        <WalletKitHandlers
+          walletKit={walletKit}
+          walletClient={walletClient}
+          address={address}
+        />
       )}
       {children}
     </WalletKitContext.Provider>
