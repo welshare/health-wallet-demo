@@ -24,6 +24,7 @@ const ConnectButton = () => {
 const WagmiComponent = () => {
   const { address } = useAccount();
   const chainId = useChainId();
+  const {user} = usePrivy();
 
   //const email = useSignInEmail();
   //const { setOpenWalletModal } = useOpenWalletModal();
@@ -31,7 +32,8 @@ const WagmiComponent = () => {
     <div>
       <p>Connected Address: {address}</p>
       <p>Chains: {chainId}</p>
-      {/* <p>Email: {email}</p> */}
+      <p>Google: {user?.google?.email} </p>
+      <p>email: {user?.email?.address} </p>
       {/* <Button onClick={() => setOpenWalletModal(true, {})}>manage</Button> */}
     </div>
   );

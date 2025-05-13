@@ -67,11 +67,8 @@ export const WalletKitContext = (props: {
             const typedDataConfig = JSON.parse(request.params[1])
             console.log("typedDataConfig", typedDataConfig)
             signature = await walletClient.signTypedData(typedDataConfig)
-        } else if (request.method === "eth_sign") {
-          // Get the message to sign
+        } else if (request.method === "personal_sign") {
           const requestParamsMessage = request.params[0];
-  
-          // Convert the message to sign
           const message = hexToString(requestParamsMessage);
   
           signature = await walletClient.signMessage({
@@ -81,7 +78,6 @@ export const WalletKitContext = (props: {
         } else {
           throw new Error(`request ${request.method} not supported`)
         }
-        console.log("signed message", signature);
         
         await walletKit.respondSessionRequest({
           topic: topic as string,
