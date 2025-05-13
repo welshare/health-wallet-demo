@@ -20,7 +20,7 @@ const SessionCard = ({ session }: { session: any }) => {
   return (
     <div
       key={session.topic}
-      className="flex items-center justify-between gap-4 p-4 rounded-lg border border-gray-100"
+      className="flex items-center justify-between gap-4 p-4 rounded-lg border"
     >
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -37,10 +37,10 @@ const SessionCard = ({ session }: { session: any }) => {
           )}
         </div>
         <div className="flex flex-col">
-          <span className="font-medium text-gray-900">
+          <span className="font-medium text-foreground">
             {session.peer.metadata.name}
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-muted-foreground">
             {session.peer.metadata.url}
           </span>
         </div>

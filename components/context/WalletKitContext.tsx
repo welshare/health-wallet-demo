@@ -56,15 +56,12 @@ export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
     <WalletKitContext.Provider value={{ walletKit, sessions: activeSessions }}>
       {children}
       {walletKit && (
-        <>
         <ApprovalDialog
           walletKit={walletKit}
           dialogState={dialogState}
           setDialogState={setDialogState}
           proposal={proposal}
         />
-        <div className="text-red-400">hello there</div>
-        </>
       )}
     </WalletKitContext.Provider>
   );
