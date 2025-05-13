@@ -1,7 +1,5 @@
 "use client";
 
-
-import { getWalletKit } from "@/components/context/WalletKitGlobals";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { supportedNamespaces } from "@/lib/namespaces";
-import { WalletKitTypes } from "@reown/walletkit";
+import { supportedNamespaces } from "@/lib/walletKit";
+
+import { IWalletKit, WalletKitTypes } from "@reown/walletkit";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { useAccount } from "wagmi";
@@ -23,13 +22,14 @@ export type ApprovalDialogState = {
 }
 
 export const ApprovalDialog = (props: {
+  walletKit: IWalletKit,
   proposal?: WalletKitTypes.SessionProposal,
   dialogState: ApprovalDialogState, setDialogState: Dispatch<SetStateAction<ApprovalDialogState>>}
 ) => {
   
-  const walletKit = getWalletKit();
   const {address} = useAccount();
-
+  const {walletKit} = props
+  
   const approveProposal = useCallback(async () => {
     if (!props.proposal || !address) return;
     const { id, params } = props.proposal;

@@ -1,6 +1,5 @@
 "use client";
 
-import { getWalletKit } from "@/components/context/WalletKitGlobals";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,18 +11,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useWalletKit } from "./context/WalletKitContext";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 export function WalletConnectDialog() {
   const [connectionString, setConnectionString] = useState<string>('')
   const [open, setOpen] = useState(false)
-  const walletKit = getWalletKit()
+  const {walletKit} = useWalletKit()
 
-  // const handleSubmit = () => {
-  //   onConnect()
-  //   //onSubmit(connectionString)
-  //   //setOpen(false)
   
   const onConnect = async () => { 
     console.log("onConnect", walletKit)

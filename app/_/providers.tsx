@@ -4,7 +4,7 @@ import { WagmiProvider } from "@privy-io/wagmi";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { WalletKitGlobals } from "@/components/context/WalletKitGlobals";
+import { WalletKitProvider } from "@/components/context/WalletKitContext";
 import { wagmiConfig } from "./privy/config";
 //import { waasConfig } from "./waas/config";
 
@@ -19,7 +19,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          <WalletKitGlobals>{children}</WalletKitGlobals>
+          <WalletKitProvider>{children}</WalletKitProvider>
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>

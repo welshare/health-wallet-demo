@@ -1,138 +1,85 @@
 "use client";
-import {
-  ApprovalDialog,
-  ApprovalDialogState,
-} from "@/components/approval-dialog";
 
-import { IWalletKit, WalletKitTypes } from "@reown/walletkit";
-import { getSdkError } from "@walletconnect/utils";
-import { useCallback, useEffect, useState } from "react";
-import { Hex, hexToString } from "viem";
-import { useWalletClient } from "wagmi";
+import { default as WalletKit } from "@reown/walletkit";
 
-export const WalletKitContext = (props: {
-  children: React.ReactNode;
-  walletKit: IWalletKit;
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+import { initializeWalletKit } from "@/lib/walletKit";
+import { ApprovalDialog, ApprovalDialogState } from "../approval-dialog";
+import { useWalletKitHandlers } from "./useWalletKitHandlers";
+
+interface WalletKitContextType {
+  walletKit?: WalletKit;
+  sessions: Record<string, any>;
+}
+
+const WalletKitContext = createContext<WalletKitContextType>({ sessions: {} });
+
+export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
 }) => {
-  const { walletKit } = props;
-  const { data: walletClient } = useWalletClient();
-  const [, setActiveSessions] = useState<Record<string, any>>({});
+  const [walletKit, setWalletKit] = useState<WalletKit>();
+
   const [dialogState, setDialogState] = useState<ApprovalDialogState>({
     proposalOpen: false,
     requestOpen: false,
   });
-  const [proposal, setProposal] = useState<WalletKitTypes.SessionProposal>();
 
-  // useEffect(() => {
-  //   const initializeSessions = async () => {
-  //     try {
-  //       const sessions = walletKit.getActiveSessions();
-  //       console.log("Active sessions:", sessions);
-
-  //       // Restore any existing sessions
-  //       if (sessions && Object.keys(sessions).length > 0) {
-  //         console.log("Restoring existing sessions");
-  //         // You might want to add additional session restoration logic here
-  //       }
-  //     } catch (error) {
-  //       console.error("Error initializing sessions:", error);
-  //     }
-  //   };
-
-  //   initializeSessions();
-  // }, [walletKit]);
-
-  const onSessionProposal = useCallback(
-    async (proposal: WalletKitTypes.SessionProposal) => {
-      console.log("onSessionProposal", proposal);
-
-      setDialogState((prev) => ({ ...prev, proposalOpen: true }));
-      setProposal(proposal);
-    },
-    []
-  );
-
-  const onSessionRequest = useCallback(
-    async (event: WalletKitTypes.SessionRequest) => {
-      console.log("onSessionRequest", event);
-      const { topic, params, id } = event;
-      const { request } = params;
-
-      try {
-        if (!walletClient) {
-          throw new Error("no wallet client")
-        }
-        let signature: Hex;
-        if (request.method === "eth_signTypedData_v4") {
-            const typedDataConfig = JSON.parse(request.params[1])
-            console.log("typedDataConfig", typedDataConfig)
-            signature = await walletClient.signTypedData(typedDataConfig)
-        } else if (request.method === "personal_sign") {
-          const requestParamsMessage = request.params[0];
-          const message = hexToString(requestParamsMessage);
-  
-          signature = await walletClient.signMessage({
-            message,
-            account: walletClient.account.address,
-          });
-        } else {
-          throw new Error(`request ${request.method} not supported`)
-        }
-        
-        await walletKit.respondSessionRequest({
-          topic: topic as string,
-          response: {
-            id,
-            result: signature,
-            jsonrpc: "2.0",
-          },
-        });
-      } catch (error) {
-        console.error("Error handling session request:", error);
-        await walletKit.respondSessionRequest({
-          topic: topic as string,
-          response: {
-            id,
-            error: getSdkError("USER_REJECTED"),
-            jsonrpc: "2.0",
-          },
-        });
-      }
-    },
-    [walletKit, walletClient]
-  );
+  const { activeSessions, proposal } = useWalletKitHandlers({
+    walletKit,
+    setDialogState,
+  });
 
   useEffect(() => {
-    if (!walletKit) {
-      console.warn("walletkit is not initialized");
-      return;
-    }
-    setActiveSessions(walletKit.getActiveSessions());
+    (async () => {
+      setWalletKit(
+        await initializeWalletKit(
+          process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+          "http://localhost:3000"
+        )
+      );
+    })();
+  }, []);
 
-    console.log("mounting handlers");
-    walletKit.on("session_proposal", onSessionProposal);
-    walletKit.on("session_request", onSessionRequest);
-    walletKit.on("session_delete", (event: WalletKitTypes.SessionDelete) => {
-      console.log("Session deleted:", event);
-      setActiveSessions(walletKit.getActiveSessions());
-    });
-
-    return () => {
-      console.log("unmounting handlers");
-      walletKit.off("session_proposal", onSessionProposal);
-      walletKit.off("session_request", onSessionRequest);
-      walletKit.off("session_delete", () => {});
-    };
-  }, [walletKit, onSessionProposal, onSessionRequest]);
+  // if (!walletKit) {
+  //   return <div className="flex items-center justify-center min-h-screen">
+  //       <div className="flex flex-col items-center gap-3">
+  //         <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+  //         <p className="text-sm text-gray-500 animate-pulse">
+  //           Initializing Wallet...
+  //         </p>
+  //       </div>
+  //     </div>
+  // }
 
   return (
-    <>
-      {props.children}
-      <ApprovalDialog
-        dialogState={dialogState}
-        setDialogState={setDialogState}
-        proposal={proposal}
-      />
-    </>
+    <WalletKitContext.Provider value={{ walletKit, sessions: activeSessions }}>
+      {children}
+      {walletKit && (
+        <>
+        <ApprovalDialog
+          walletKit={walletKit}
+          dialogState={dialogState}
+          setDialogState={setDialogState}
+          proposal={proposal}
+        />
+        <div className="text-red-400">hello there</div>
+        </>
+      )}
+    </WalletKitContext.Provider>
   );
+};
+
+// useEffect(() => {
+//   if (!walletKit || !address || !chainId) return;
+//   console.log("UPDATING address chain id ", address, chainId);
+//   updateSignClientChainId(walletKit, "" + chainId, address);
+// }, [walletKit, address, chainId]);
+
+export const useWalletKit = () => {
+  const context = useContext(WalletKitContext);
+  if (!context) {
+    throw new Error("useWalletKit must be used within a WalletKitProvider");
+  }
+  return context;
 };
