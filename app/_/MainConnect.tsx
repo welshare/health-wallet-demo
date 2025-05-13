@@ -8,10 +8,10 @@ const ConnectButton = () => {
   const { isConnected } = useAccount();
 
   const { disconnect } = useDisconnect();
-  const {connectOrCreateWallet} = usePrivy();
+  const {connectOrCreateWallet, logout} = usePrivy();
 
   if (isConnected) {
-    return <Button onClick={() => disconnect()}>disconnect</Button>;
+    return <Button onClick={async () => {await logout(); disconnect()}}>logout</Button>;
   }
 
   return (

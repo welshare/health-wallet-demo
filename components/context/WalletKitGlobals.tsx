@@ -12,6 +12,8 @@ export async function initializeWallet() {
   try {
     const core = new Core({
       projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+      customStoragePrefix: "welshare-client-role-", // this allows using walletkit along walletconnect in the same browser
+      name: "Welshare Client Role",
     });
 
     walletKit = await WalletKit.init({

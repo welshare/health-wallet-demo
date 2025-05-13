@@ -7,7 +7,7 @@ import {
 import { IWalletKit, WalletKitTypes } from "@reown/walletkit";
 import { getSdkError } from "@walletconnect/utils";
 import { useCallback, useEffect, useState } from "react";
-import { hexToString } from "viem";
+import { Hex, hexToString } from "viem";
 import { useWalletClient } from "wagmi";
 
 export const WalletKitContext = (props: {
@@ -57,21 +57,32 @@ export const WalletKitContext = (props: {
       console.log("onSessionRequest", event);
       const { topic, params, id } = event;
       const { request } = params;
+
       try {
-        // Get the message to sign
-        const requestParamsMessage = request.params[0];
-
-        // Convert the message to sign
-        const message = hexToString(requestParamsMessage);
-
-        // Sign the message
-        const signature = await walletClient?.signMessage({
-          message,
-          account: walletClient?.account.address,
-        });
-
+        if (!walletClient) {
+          throw new Error("no wallet client")
+        }
+        let signature: Hex;
+        if (request.method === "eth_signTypedData_v4") {
+            const typedDataConfig = JSON.parse(request.params[1])
+            console.log("typedDataConfig", typedDataConfig)
+            signature = await walletClient.signTypedData(typedDataConfig)
+        } else if (request.method === "eth_sign") {
+          // Get the message to sign
+          const requestParamsMessage = request.params[0];
+  
+          // Convert the message to sign
+          const message = hexToString(requestParamsMessage);
+  
+          signature = await walletClient.signMessage({
+            message,
+            account: walletClient.account.address,
+          });
+        } else {
+          throw new Error(`request ${request.method} not supported`)
+        }
         console.log("signed message", signature);
-        // once you have signed, return the signature
+        
         await walletKit.respondSessionRequest({
           topic: topic as string,
           response: {
