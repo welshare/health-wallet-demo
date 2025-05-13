@@ -1,7 +1,8 @@
 import { getSdkError } from "@walletconnect/utils";
+import { X } from 'lucide-react';
 import { useCallback } from "react";
 import { useWalletKit } from "./context/WalletKitContext";
-
+import { Button } from "./ui/button";
 const SessionCard = ({ session }: { session: any }) => {
   const { walletKit } = useWalletKit();
 
@@ -19,7 +20,7 @@ const SessionCard = ({ session }: { session: any }) => {
   return (
     <div
       key={session.topic}
-      className="flex items-center justify-between gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100"
+      className="flex items-center justify-between gap-4 p-4 rounded-lg border border-gray-100"
     >
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -44,24 +45,9 @@ const SessionCard = ({ session }: { session: any }) => {
           </span>
         </div>
       </div>
-      <button
-        onClick={() => disconnectSession(session.topic)}
-        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-        title="Disconnect"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
+      <Button variant="outline" size="icon" onClick={() => disconnectSession(session.topic)}   title="Disconnect" className="hover:text-red-500 transition-colors rounded-full">
+        <X fill="currentColor" />
+      </Button>
     </div>
   );
 };
