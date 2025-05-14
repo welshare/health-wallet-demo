@@ -34,9 +34,8 @@ export function WalletConnectDialog() {
    
     //setOpen(false)
   }
-
   if (!isConnected) return null
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

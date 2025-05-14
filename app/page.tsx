@@ -1,6 +1,6 @@
-import MainConnect from "./_/MainConnect";
+import Wallet from "./_/Wallet";
 
 export default function Home() {
 
-  return <MainConnect />
+  return <Wallet />
 }
