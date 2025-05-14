@@ -70,9 +70,9 @@ const ConnectedWallet = () => {
                   alt={session.peer.metadata.name}
                   className="w-5 h-5 object-cover"
                 />
-                <span className="font-medium text-foreground">
-                  {session.peer.metadata.name}
-                </span>
+              <span className="font-medium text-foreground">
+                {session.peer.metadata.name}
+              </span>
               </DropdownMenuItem>
             ))}
           <DropdownMenuItem
