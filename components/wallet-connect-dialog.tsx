@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import { useWalletKit } from "./context/WalletKitContext";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -19,7 +20,7 @@ export function WalletConnectDialog() {
   const [connectionString, setConnectionString] = useState<string>('')
   const [open, setOpen] = useState(false)
   const {walletKit} = useWalletKit()
-
+  const {isConnected} = useAccount()
   
   const onConnect = async () => { 
     console.log("onConnect", walletKit)
@@ -34,6 +35,8 @@ export function WalletConnectDialog() {
     //setOpen(false)
   }
 
+  if (!isConnected) return null
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

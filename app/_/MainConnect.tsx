@@ -32,7 +32,7 @@ const ConnectButton = () => {
 };
 
 const WagmiComponent = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const { user } = usePrivy();
 
@@ -40,7 +40,7 @@ const WagmiComponent = () => {
   //const { setOpenWalletModal } = useOpenWalletModal();
   return (
     <div>
-      <p>Connected Address: {address}</p>
+      <p>Connected Address: {address} {!isConnected && "Not Connected"}</p>
       <p>Chains: {chainId}</p>
       <p>Google: {user?.google?.email} </p>
       <p>email: {user?.email?.address} </p>
@@ -50,7 +50,7 @@ const WagmiComponent = () => {
 };
 
 export default function MainConnect() {
-  
+
   return (
     <>
       <ConnectButton />
