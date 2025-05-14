@@ -1,4 +1,5 @@
 "use client";
+import { WalletConnectIcon } from "@/components/icons/WalletConnectIcon";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { WalletConnectDialog } from "@/components/wallet-connect-dialog";
 import truncateEthAddress from "@/lib/truncate";
 import { usePrivy } from "@privy-io/react-auth";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
@@ -28,10 +30,10 @@ const ConnectedWallet = () => {
 
   const emailAddress = user?.google?.email || user?.email?.address;
   return (
-    <div>
+    <div className="flex items-center gap-1">
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button variant={"outline"}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
             {truncateEthAddress(address || "0x")}
           </Button>
         </DropdownMenuTrigger>
@@ -42,6 +44,7 @@ const ConnectedWallet = () => {
           <DropdownMenuSeparator />
           <DropdownMenuLabel>{emailAddress}</DropdownMenuLabel>
           <DropdownMenuLabel>Chain {chainId}</DropdownMenuLabel>
+          {/* <WalletConnectSessions />  */}
           <DropdownMenuItem
             onClick={async () => {
               await logout();
@@ -52,17 +55,22 @@ const ConnectedWallet = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      {/* <WagmiComponent />
-      <WalletConnectDialog />
-      <WalletConnectSessions /> */}
+      <WalletConnectDialog>
+        <Button variant="outline" size="icon">
+          <WalletConnectIcon />
+        </Button>
+      </WalletConnectDialog>
     </div>
   );
 };
 export default function Wallet() {
   const { isConnected } = useAccount();
   if (isConnected) {
-    return <ConnectedWallet />;
+    return (
+      <div>
+        <ConnectedWallet />
+      </div>
+    );
   }
 
   return (

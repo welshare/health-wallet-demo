@@ -16,7 +16,7 @@ import { useWalletKit } from "./context/WalletKitContext";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export function WalletConnectDialog() {
+export function WalletConnectDialog({children}: {children: React.ReactNode}) {
   const [connectionString, setConnectionString] = useState<string>('')
   const [open, setOpen] = useState(false)
   const {walletKit} = useWalletKit()
@@ -31,15 +31,14 @@ export function WalletConnectDialog() {
     } catch (error) {
       console.error("Error pairing wallet:", error)
     }
-   
-    //setOpen(false)
+    setOpen(false)
   }
   if (!isConnected) return null
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button disabled={!walletKit}>WalletConnect</Button>
+        {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Separator } from "@/components/ui/separator";
 import { Header } from "./_/components/Header";
 import { Providers } from "./_/providers";
 import "./globals.css";
@@ -20,6 +21,7 @@ export default function RootLayout({
         <div className="md:container md:mx-auto p-4 sm:px-6 lg:px-8">
           <Providers>
             <Header />
+            <Separator />
             {children}
           </Providers>
         </div>
