@@ -1,8 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { WalletConnectDialog } from "@/components/wallet-connect-dialog";
-import { WalletConnectSessions } from "@/components/wallet-connect-sessions";
-import { usePrivy } from "@privy-io/react-auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,85 +7,67 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import truncateEthAddress from "@/lib/truncate";
+import { usePrivy } from "@privy-io/react-auth";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
 
 const ConnectButton = () => {
-  const { isConnected } = useAccount();
-
-  const { disconnect } = useDisconnect();
-  const { connectOrCreateWallet, logout } = usePrivy();
-
-  if (isConnected) {
-    return (
-      <Button
-        onClick={async () => {
-          await logout();
-          disconnect();
-        }}
-      >
-        logout
-      </Button>
-    );
-  }
-
+  const { connectOrCreateWallet } = usePrivy();
   return (
-    <>
-      <Button onClick={() => connectOrCreateWallet()}>Connect Account</Button>
-    </>
-  );
-};
-
-const WagmiComponent = () => {
-  const { address, isConnected } = useAccount();
-  const chainId = useChainId();
-  const { user } = usePrivy();
-
-  //const email = useSignInEmail();
-  //const { setOpenWalletModal } = useOpenWalletModal();
-  return (
-    <div>
-      <p>
-        Connected Address: {address} {!isConnected && "Not Connected"}
-      </p>
-      <p>Chains: {chainId}</p>
-      <p>Google: {user?.google?.email} </p>
-      <p>email: {user?.email?.address} </p>
-      {/* <Button onClick={() => setOpenWalletModal(true, {})}>manage</Button> */}
-    </div>
+    <Button onClick={() => connectOrCreateWallet()}>Connect Account</Button>
   );
 };
 
 const ConnectedWallet = () => {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
   const chainId = useChainId();
-  const { user } = usePrivy();
 
+  const { user, logout } = usePrivy();
+
+  const emailAddress = user?.google?.email || user?.email?.address;
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger></DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>{address}</DropdownMenuLabel>
+        <DropdownMenuTrigger>
+          <Button variant={"outline"}>
+            {truncateEthAddress(address || "0x")}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>
+            {truncateEthAddress(address || "0x")}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          <DropdownMenuLabel>{emailAddress}</DropdownMenuLabel>
+          <DropdownMenuLabel>Chain {chainId}</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={async () => {
+              await logout();
+              disconnect();
+            }}
+          >
+            Sign out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <WagmiComponent />
+      {/* <WagmiComponent />
       <WalletConnectDialog />
-      <WalletConnectSessions />
+      <WalletConnectSessions /> */}
     </div>
   );
 };
 export default function Wallet() {
   const { isConnected } = useAccount();
   if (isConnected) {
-    return ConnectedWallet();
+    return <ConnectedWallet />;
   }
 
-  return <ConnectButton />;
+  return (
+    <>
+      <ConnectButton />
+    </>
+  );
 }

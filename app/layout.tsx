@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
+import { Header } from "./_/components/Header";
 import { Providers } from "./_/providers";
 import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +18,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <div className="md:container md:mx-auto p-4 sm:px-6 lg:px-8">
-          <Providers>{children}</Providers>
+          <Providers>
+            <Header />
+            {children}
+          </Providers>
         </div>
       </body>
     </html>
