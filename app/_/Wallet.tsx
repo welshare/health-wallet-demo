@@ -18,10 +18,8 @@ import { useCallback } from "react";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
 
 const ConnectButton = () => {
-  const { connectOrCreateWallet } = usePrivy();
-  return (
-    <Button onClick={() => connectOrCreateWallet()}>Connect Account</Button>
-  );
+  const { login } = usePrivy();
+  return <Button onClick={() => login()}>Connect Account</Button>;
 };
 
 const ConnectedWallet = () => {
@@ -40,7 +38,7 @@ const ConnectedWallet = () => {
         reason: getSdkError("USER_DISCONNECTED"),
       });
     },
-    [walletKit]
+    [walletKit],
   );
 
   const emailAddress = user?.google?.email || user?.email?.address;

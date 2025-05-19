@@ -13,8 +13,8 @@ import { useState } from "react";
 import Wallet from "../Wallet";
 
 const navigation: { name: string; href: string }[] = [
-  // { name: "Home", href: "/" },
-  // { name: "Features", href: "/features" },
+  { name: "Home", href: "/" },
+  { name: "Connections", href: "/connections" },
   // { name: "About", href: "/about" },
 ];
 
@@ -70,8 +70,7 @@ export function Header() {
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>
-              </SheetTitle>
+              <SheetTitle></SheetTitle>
             </SheetHeader>
 
             <div className="gap-4 px-4">
