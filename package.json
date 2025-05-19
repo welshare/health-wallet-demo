@@ -9,9 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "0xsequence": "^2.3.7",
-    "@0xsequence/connect": "^5.2.4",
-    "@0xsequence/wallet-widget": "^5.2.4",
     "@privy-io/react-auth": "^2.13.1",
     "@privy-io/wagmi": "^1.0.3",
     "@radix-ui/react-dialog": "^1.1.13",
