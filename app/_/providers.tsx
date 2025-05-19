@@ -7,7 +7,6 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { WalletKitProvider } from "@/components/context/WalletKitContext";
 import { wagmiConfig } from "./privy/config";
-//import { waasConfig } from "./waas/config";
 
 const privyConfig = {};
 const queryClient = new QueryClient();
@@ -40,10 +39,3 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     </ThemeProvider>
   );
 };
-
-{
-  /* </SequenceWalletProvider>
-<SequenceConnect config={waasConfig}>
-<SequenceWalletProvider>
-</SequenceConnect> */
-}

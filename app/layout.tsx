@@ -21,7 +21,7 @@ export default function RootLayout({
         <div className="md:container md:mx-auto p-4 sm:px-6 lg:px-8">
           <Providers>
             <Header />
-            <Separator />
+            <Separator className="mb-4" />
             {children}
           </Providers>
         </div>
