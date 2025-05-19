@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { WalletConnectDialog } from "@/components/wallet-connect-dialog";
 import truncateEthAddress from "@/lib/truncate";
-import { usePrivy } from "@privy-io/react-auth";
+import { useCrossAppAccounts, usePrivy } from "@privy-io/react-auth";
 import { getSdkError } from "@walletconnect/utils";
 import { useCallback } from "react";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
@@ -22,6 +22,18 @@ const ConnectButton = () => {
   return <Button onClick={() => login()}>Connect Account</Button>;
 };
 
+const LoginWithWelshareButton = () => {
+  const { loginWithCrossAppAccount } = useCrossAppAccounts();
+  return (
+    <Button
+      onClick={() =>
+        loginWithCrossAppAccount({ appId: "insert-provider-app-id" })
+      }
+    >
+      Login with Welshare
+    </Button>
+  );
+};
 const ConnectedWallet = () => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
@@ -93,6 +105,9 @@ const ConnectedWallet = () => {
 };
 export default function Wallet() {
   const { isConnected } = useAccount();
+  const { ready } = usePrivy();
+
+  if (!ready) return null;
   if (isConnected) {
     return (
       <div>

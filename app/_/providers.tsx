@@ -6,9 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { WalletKitProvider } from "@/components/context/WalletKitContext";
-import { wagmiConfig } from "./privy/config";
+import { privyConfig, wagmiConfig } from "./privy/config";
 
-const privyConfig = {};
 const queryClient = new QueryClient();
 
 const ThemeProvider = ({
@@ -22,7 +21,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="dark"
       enableSystem
       disableTransitionOnChange
     >

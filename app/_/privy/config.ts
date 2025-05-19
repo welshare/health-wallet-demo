@@ -1,8 +1,8 @@
 import { PrivyClientConfig } from "@privy-io/react-auth";
-import { baseSepolia, mainnet, sepolia } from 'viem/chains';
-import { http, injected } from 'wagmi';
+import { baseSepolia, mainnet, sepolia } from "viem/chains";
+import { http, injected } from "wagmi";
 
-import { createConfig } from '@privy-io/wagmi';
+import { createConfig } from "@privy-io/wagmi";
 import { walletConnect } from "wagmi/connectors";
 
 export const wagmiConfig = createConfig({
@@ -11,23 +11,35 @@ export const wagmiConfig = createConfig({
     injected(),
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    })
+    }),
   ],
+  ssr: true,
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
     [baseSepolia.id]: http(),
-  }
+  },
 });
 
+const ABSTRACT_PROVIDER_APP_ID = "cm04asygd041fmry9zmcyn5o5";
+const ZORA_PROVIDER_APP_ID = "clpgf04wn04hnkw0fv1m11mnb";
+const STRAWBERRY_PROVIDER_APP_ID = "clxva96js0039k9pb3pw2uovx";
 export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
-    createOnLogin: 'users-without-wallets',
-    requireUserPasswordOnCreate: true,
-    showWalletUIs: true
+    ethereum: {
+      createOnLogin: "users-without-wallets",
+    },
   },
-  loginMethods: ['wallet', 'email', 'sms', "google", "github"],
+  loginMethodsAndOrder: {
+    primary: [
+      "google",
+      "email",
+      //`privy:${ZORA_PROVIDER_APP_ID}`,
+      //"wallet_connect",
+    ],
+    overflow: [], //"detected_wallets"
+  },
   appearance: {
-    showWalletLoginFirst: true
-  }
+    showWalletLoginFirst: true,
+  },
 };
