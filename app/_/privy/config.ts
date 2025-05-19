@@ -22,19 +22,20 @@ export const wagmiConfig = createConfig({
 });
 
 const ABSTRACT_PROVIDER_APP_ID = "cm04asygd041fmry9zmcyn5o5";
-const ZORA_PROVIDER_APP_ID = "clpgf04wn04hnkw0fv1m11mnb";
+export const ZORA_PROVIDER_APP_ID = "clpgf04wn04hnkw0fv1m11mnb";
 const STRAWBERRY_PROVIDER_APP_ID = "clxva96js0039k9pb3pw2uovx";
 export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     ethereum: {
-      createOnLogin: "users-without-wallets",
+      createOnLogin: "off",
     },
   },
   loginMethodsAndOrder: {
     primary: [
       "google",
       "email",
-      //`privy:${ZORA_PROVIDER_APP_ID}`,
+      `privy:${ZORA_PROVIDER_APP_ID}`,
+      `privy:${STRAWBERRY_PROVIDER_APP_ID}`,
       //"wallet_connect",
     ],
     overflow: [], //"detected_wallets"

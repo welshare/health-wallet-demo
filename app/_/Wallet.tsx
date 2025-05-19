@@ -54,12 +54,13 @@ const ConnectedWallet = () => {
   );
 
   const emailAddress = user?.google?.email || user?.email?.address;
+
   return (
     <div className="flex items-center gap-1">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">
-            {truncateEthAddress(address || "0x")}
+            {address ? truncateEthAddress(address || "0x") : emailAddress}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
@@ -105,10 +106,10 @@ const ConnectedWallet = () => {
 };
 export default function Wallet() {
   const { isConnected } = useAccount();
-  const { ready } = usePrivy();
+  const { ready, authenticated } = usePrivy();
 
   if (!ready) return null;
-  if (isConnected) {
+  if (isConnected || authenticated) {
     return (
       <div>
         <ConnectedWallet />

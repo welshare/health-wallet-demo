@@ -1,5 +1,4 @@
-import { AllWallets } from "./_/components/AllWallets";
-import { ConnectButton } from "./_/components/ConnectButton";
+import { Signin } from "./_/components/SigninButton";
 
 export default function Home() {
   return (
@@ -38,8 +37,7 @@ export default function Home() {
           for this reward round.
         </p>
         <div className="flex justify-center mx-auto my-8">
-          <AllWallets />
-          <ConnectButton>connect, link or create wallet</ConnectButton>
+          <Signin>sign in</Signin>
         </div>
         <p>
           Connecting a wallet here does <strong>not</strong> guarantee a reward.
