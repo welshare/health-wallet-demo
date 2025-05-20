@@ -1,14 +1,22 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useLinkAccount, usePrivy, useWallets } from "@privy-io/react-auth";
-import React from "react";
+import {
+  useActiveWallet,
+  useCrossAppAccounts,
+  usePrivy,
+  useWallets,
+} from "@privy-io/react-auth";
+import React, { useMemo } from "react";
 import { useAccount, useConnect, useConnectors } from "wagmi";
-import { AllWallets } from "./AllWallets";
+import { ABSTRACT_PROVIDER_APP_ID } from "../privy/config";
 
 const ConnectWalletControl = () => {
-  const { linkEmail } = useLinkAccount();
   const connectors = useConnectors();
   const { connect } = useConnect();
+  const { linkCrossAppAccount, loginWithCrossAppAccount } =
+    useCrossAppAccounts();
+
+  const { setActiveWallet, wallet } = useActiveWallet();
 
   const { address, isConnected } = useAccount();
 
@@ -23,7 +31,19 @@ const ConnectWalletControl = () => {
     connectOrCreateWallet,
     createWallet,
     linkWallet,
+    linkEmail,
   } = usePrivy();
+
+  const abstractAccount = useMemo(() => {
+    if (!user) return null;
+    console.log("LINKED_ACCOUNTS", user.linkedAccounts);
+
+    return user.linkedAccounts.find(
+      (account) =>
+        account.type === "cross_app" &&
+        account.providerApp.id === ABSTRACT_PROVIDER_APP_ID,
+    );
+  }, [user]);
 
   const { wallets, ready: walletsReady } = useWallets();
   console.log("connectors", connectors);
@@ -59,11 +79,31 @@ const ConnectWalletControl = () => {
               })
             }
           >
-            link wallet
+            connect a wallet
           </Button>{" "}
           <span>or</span>
-          <Button onClick={() => createWallet()}>
-            create a wallet in your browser.
+          <Button onClick={() => createWallet({})}>
+            create a new wallet in your browser.
+          </Button>
+          <span>or</span>
+          <Button
+            onClick={async () => {
+              // const _user = await loginWithCrossAppAccount({
+              //   appId: ABSTRACT_PROVIDER_APP_ID,
+              // });
+              const _user = await linkCrossAppAccount({
+                appId: ABSTRACT_PROVIDER_APP_ID,
+              });
+              const wallet = _user.linkedAccounts.find(
+                (account) =>
+                  account.type === "cross_app" &&
+                  account.providerApp.id === ABSTRACT_PROVIDER_APP_ID,
+              );
+
+              console.log(_user, wallet);
+            }}
+          >
+            connect with abstract.
           </Button>
         </div>
       );
@@ -94,10 +134,5 @@ export const Signin = (props: { children: React.ReactNode }) => {
 
   if (!ready) return null;
 
-  return (
-    <>
-      <ConnectWalletControl />
-      <AllWallets />
-    </>
-  );
+  return <ConnectWalletControl />;
 };
