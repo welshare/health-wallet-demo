@@ -16,6 +16,7 @@ import { useCrossAppAccounts, usePrivy } from "@privy-io/react-auth";
 import { getSdkError } from "@walletconnect/utils";
 import { useCallback } from "react";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
+import { EthAvatar } from "./components/EthAvatar";
 import { LinkWallet } from "./components/LinkWallet";
 import { SigninButton } from "./components/SigninControl";
 
@@ -64,7 +65,10 @@ const ConnectedWallet = () => {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>
             {address ? (
-              truncateEthAddress(address || "0x")
+              <div className="flex flex-row gap-2">
+                <EthAvatar address={address} />
+                <span>{truncateEthAddress(address || "0x")}</span>
+              </div>
             ) : (
               <LinkWallet className="text-sm flex-col" size="sm" />
             )}

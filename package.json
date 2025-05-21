@@ -21,6 +21,7 @@
     "@walletconnect/core": "^2.20.2",
     "@walletconnect/types": "^2.20.2",
     "@walletconnect/utils": "^2.20.2",
+    "blockies-ts": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "ethers": "6.13.0",
