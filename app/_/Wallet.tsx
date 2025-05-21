@@ -16,11 +16,8 @@ import { useCrossAppAccounts, usePrivy } from "@privy-io/react-auth";
 import { getSdkError } from "@walletconnect/utils";
 import { useCallback } from "react";
 import { useAccount, useChainId, useDisconnect } from "wagmi";
-
-const ConnectButton = () => {
-  const { login } = usePrivy();
-  return <Button onClick={() => login()}>Connect Account</Button>;
-};
+import { LinkWallet } from "./components/LinkWallet";
+import { SigninButton } from "./components/SigninControl";
 
 const LoginWithWelshareButton = () => {
   const { loginWithCrossAppAccount } = useCrossAppAccounts();
@@ -53,7 +50,8 @@ const ConnectedWallet = () => {
     [walletKit],
   );
 
-  const emailAddress = user?.google?.email || user?.email?.address;
+  const emailAddress =
+    user?.google?.email || user?.apple?.email || user?.email?.address;
 
   return (
     <div className="flex items-center gap-1">
@@ -65,7 +63,11 @@ const ConnectedWallet = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>
-            {truncateEthAddress(address || "0x")}
+            {address ? (
+              truncateEthAddress(address || "0x")
+            ) : (
+              <LinkWallet className="text-sm flex-col" size="sm" />
+            )}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuLabel>{emailAddress}</DropdownMenuLabel>
@@ -109,7 +111,8 @@ export default function Wallet() {
   const { ready, authenticated } = usePrivy();
 
   if (!ready) return null;
-  if (isConnected || authenticated) {
+
+  if (authenticated) {
     return (
       <div>
         <ConnectedWallet />
@@ -118,8 +121,8 @@ export default function Wallet() {
   }
 
   return (
-    <>
-      <ConnectButton />
-    </>
+    <div>
+      <SigninButton />
+    </div>
   );
 }

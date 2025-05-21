@@ -1,4 +1,8 @@
-import { PrivyClientConfig } from "@privy-io/react-auth";
+import {
+  LoginMethodOrderOption,
+  NonEmptyArray,
+  PrivyClientConfig,
+} from "@privy-io/react-auth";
 import { baseSepolia, mainnet, sepolia } from "viem/chains";
 import { http, injected } from "wagmi";
 
@@ -21,9 +25,16 @@ export const wagmiConfig = createConfig({
   },
 });
 
+export const LOGIN_METHODS: PrivyClientConfig["loginMethods"] = [
+  "google",
+  "email",
+  "apple",
+];
+
 export const ABSTRACT_PROVIDER_APP_ID = "cm04asygd041fmry9zmcyn5o5";
 export const ZORA_PROVIDER_APP_ID = "clpgf04wn04hnkw0fv1m11mnb";
 const STRAWBERRY_PROVIDER_APP_ID = "clxva96js0039k9pb3pw2uovx";
+
 export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     ethereum: {
@@ -32,8 +43,7 @@ export const privyConfig: PrivyClientConfig = {
   },
   loginMethodsAndOrder: {
     primary: [
-      "google",
-      "email",
+      ...(LOGIN_METHODS as NonEmptyArray<LoginMethodOrderOption>),
       // `privy:${ZORA_PROVIDER_APP_ID}`,
       // `privy:${STRAWBERRY_PROVIDER_APP_ID}`,
       //"wallet_connect",
