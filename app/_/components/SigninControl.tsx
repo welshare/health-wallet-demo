@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import truncateEthAddress from "@/lib/truncate";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { Address } from "viem";
@@ -8,7 +8,7 @@ import { LOGIN_METHODS } from "../privy/config";
 import { EthAvatar } from "./EthAvatar";
 import { LinkWallet } from "./LinkWallet";
 
-export const SigninButton = () => {
+export const SigninButton = (props: ButtonProps) => {
   const { ready, authenticated, login } = usePrivy();
   const { isConnected } = useAccount();
 
@@ -17,6 +17,7 @@ export const SigninButton = () => {
   if (!authenticated && !isConnected) {
     return (
       <Button
+        variant={props.variant || "default"}
         onClick={() => login({ loginMethods: LOGIN_METHODS })}
         disabled={!ready}
       >
@@ -33,7 +34,7 @@ export const SigninControl = () => {
   if (!ready) return null;
 
   if (!authenticated && !isConnected) {
-    return <SigninButton />;
+    return <SigninButton variant="secondary" />;
   }
   if (!walletsReady) return null;
 
@@ -51,7 +52,7 @@ export const SigninControl = () => {
       using{"  "}
       <EthAvatar address={wallet.address} className="inline" />
       {"  "}
-      {truncateEthAddress(wallet.address as Address)}
+      {truncateEthAddress(wallet.address as Address, 7, 7)}
       {"  "}(
       <Button
         size="sm"

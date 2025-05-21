@@ -12,7 +12,7 @@ export function Header() {
       >
         {/* Logo */}
         <div className="flex flex-1">
-          <Image src="/lcl_logo.jpg" alt="LCL" width={150} height={100} />
+          <Image src="/lcl_logo.svg" alt="LCL" width={250} height={80} />
         </div>
 
         <div className="flex flex-1 gap-x-4 justify-end items-center">
