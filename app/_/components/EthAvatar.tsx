@@ -14,7 +14,7 @@ export const EthAvatar = ({ address, className }: EthAvatarProps) => {
     <img
       src={imgSrc}
       alt="Eth Avatar"
-      className={clsx(className, "rounded-full w-6 h-6")}
+      className={clsx("align-text-bottom rounded-full h-4 w-4", className)}
     />
   );
 };
