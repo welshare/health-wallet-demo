@@ -7,7 +7,7 @@ import { ApprovalDialogState } from "../approval-dialog";
 
 export const useWalletKitHandlers = ({
   walletKit,
-  setDialogState,
+  setDialogState
 }: {
   walletKit?: IWalletKit;
   setDialogState: React.Dispatch<React.SetStateAction<ApprovalDialogState>>;
@@ -67,7 +67,7 @@ export const useWalletKitHandlers = ({
 
           signature = await walletClient.signMessage({
             message,
-            account: walletClient.account.address,
+            account: walletClient.account.address
           });
         } else {
           throw new Error(`request ${request.method} not supported`);
@@ -78,8 +78,8 @@ export const useWalletKitHandlers = ({
           response: {
             id,
             result: signature,
-            jsonrpc: "2.0",
-          },
+            jsonrpc: "2.0"
+          }
         });
       } catch (error) {
         console.error("Error handling session request:", error);
@@ -88,8 +88,8 @@ export const useWalletKitHandlers = ({
           response: {
             id,
             error: getSdkError("USER_REJECTED"),
-            jsonrpc: "2.0",
-          },
+            jsonrpc: "2.0"
+          }
         });
       }
     },
@@ -122,6 +122,6 @@ export const useWalletKitHandlers = ({
 
   return {
     activeSessions,
-    proposal,
+    proposal
   };
 };

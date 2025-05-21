@@ -1,5 +1,5 @@
 import { getSdkError } from "@walletconnect/utils";
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 import { useCallback } from "react";
 import { useWalletKit } from "./context/WalletKitContext";
 import { Button } from "./ui/button";
@@ -11,7 +11,7 @@ const SessionCard = ({ session }: { session: any }) => {
       if (!walletKit) return;
       await walletKit.disconnectSession({
         topic,
-        reason: getSdkError("USER_DISCONNECTED"),
+        reason: getSdkError("USER_DISCONNECTED")
       });
     },
     [walletKit]
@@ -45,7 +45,13 @@ const SessionCard = ({ session }: { session: any }) => {
           </span>
         </div>
       </div>
-      <Button variant="outline" size="icon" onClick={() => disconnectSession(session.topic)}   title="Disconnect" className="hover:text-red-500 transition-colors rounded-full">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => disconnectSession(session.topic)}
+        title="Disconnect"
+        className="hover:text-red-500 transition-colors rounded-full"
+      >
         <X fill="currentColor" />
       </Button>
     </div>

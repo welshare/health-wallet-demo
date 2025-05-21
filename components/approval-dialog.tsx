@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { supportedNamespaces } from "@/lib/walletKit";
 
@@ -19,17 +19,17 @@ import { useAccount } from "wagmi";
 export type ApprovalDialogState = {
   proposalOpen: boolean;
   requestOpen: boolean;
-}
+};
 
 export const ApprovalDialog = (props: {
-  walletKit: IWalletKit,
-  proposal?: WalletKitTypes.SessionProposal,
-  dialogState: ApprovalDialogState, setDialogState: Dispatch<SetStateAction<ApprovalDialogState>>}
-) => {
-  
-  const {address} = useAccount();
-  const {walletKit} = props
-  
+  walletKit: IWalletKit;
+  proposal?: WalletKitTypes.SessionProposal;
+  dialogState: ApprovalDialogState;
+  setDialogState: Dispatch<SetStateAction<ApprovalDialogState>>;
+}) => {
+  const { address } = useAccount();
+  const { walletKit } = props;
+
   const approveProposal = useCallback(async () => {
     if (!props.proposal || !address) return;
     const { id, params } = props.proposal;
@@ -37,12 +37,12 @@ export const ApprovalDialog = (props: {
     try {
       const approvedNamespaces = buildApprovedNamespaces({
         proposal: params,
-        supportedNamespaces: namespaces,
+        supportedNamespaces: namespaces
       });
       console.log("approving session", id, approvedNamespaces);
       const result = await walletKit.approveSession({
         id: id as number,
-        namespaces: approvedNamespaces,
+        namespaces: approvedNamespaces
       });
 
       const sessions = walletKit.getActiveSessions();
@@ -51,10 +51,10 @@ export const ApprovalDialog = (props: {
       console.error("Error approving session:", error);
       await walletKit.rejectSession({
         id: id,
-        reason: getSdkError("USER_REJECTED"),
+        reason: getSdkError("USER_REJECTED")
       });
     } finally {
-      props.setDialogState((prev) => ({ ...prev, proposalOpen: false }))
+      props.setDialogState((prev) => ({ ...prev, proposalOpen: false }));
     }
   }, [props, address, walletKit]);
 

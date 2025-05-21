@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useAccount } from "wagmi";
@@ -16,30 +16,32 @@ import { useWalletKit } from "./context/WalletKitContext";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export function WalletConnectDialog({children}: {children: React.ReactNode}) {
-  const [connectionString, setConnectionString] = useState<string>('')
-  const [open, setOpen] = useState(false)
-  const {walletKit} = useWalletKit()
-  const {isConnected} = useAccount()
-  
-  const onConnect = async () => { 
-    console.log("onConnect", walletKit)
-    if (!walletKit) return
+export function WalletConnectDialog({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  const [connectionString, setConnectionString] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const { walletKit } = useWalletKit();
+  const { isConnected } = useAccount();
+
+  const onConnect = async () => {
+    console.log("onConnect", walletKit);
+    if (!walletKit) return;
     try {
-      console.log("PAIRING", connectionString)
-      await walletKit.core.pairing.pair({ uri: connectionString })
+      console.log("PAIRING", connectionString);
+      await walletKit.core.pairing.pair({ uri: connectionString });
     } catch (error) {
-      console.error("Error pairing wallet:", error)
+      console.error("Error pairing wallet:", error);
     }
-    setOpen(false)
-  }
-  if (!isConnected) return null
+    setOpen(false);
+  };
+  if (!isConnected) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Connect Wallet</DialogTitle>
@@ -52,22 +54,24 @@ export function WalletConnectDialog({children}: {children: React.ReactNode}) {
             <Label htmlFor="connectionString" className="text-right">
               Connection String
             </Label>
-            <Input 
-              id="connectionString" 
+            <Input
+              id="connectionString"
               aria-label="wc url connect input"
               placeholder="e.g. wc:a281567bb3e4..."
-              value={connectionString} 
-              className="col-span-3" 
-              onChange={(e) => setConnectionString(e.target.value)} 
+              value={connectionString}
+              className="col-span-3"
+              onChange={(e) => setConnectionString(e.target.value)}
             />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={onConnect}>Connect</Button>
+          <Button type="submit" onClick={onConnect}>
+            Connect
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 /*

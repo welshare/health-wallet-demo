@@ -16,18 +16,18 @@ interface WalletKitContextType {
 const WalletKitContext = createContext<WalletKitContextType>({ sessions: {} });
 
 export const WalletKitProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const [walletKit, setWalletKit] = useState<WalletKit>();
 
   const [dialogState, setDialogState] = useState<ApprovalDialogState>({
     proposalOpen: false,
-    requestOpen: false,
+    requestOpen: false
   });
 
   const { activeSessions, proposal } = useWalletKitHandlers({
     walletKit,
-    setDialogState,
+    setDialogState
   });
 
   useEffect(() => {

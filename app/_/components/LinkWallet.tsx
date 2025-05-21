@@ -4,7 +4,7 @@ import {
   useActiveWallet,
   useCrossAppAccounts,
   usePrivy,
-  useWallets,
+  useWallets
 } from "@privy-io/react-auth";
 import clsx from "clsx";
 import { useMemo } from "react";
@@ -35,7 +35,7 @@ export const LinkWallet = (props: {
     connectOrCreateWallet,
     createWallet,
     linkWallet,
-    linkEmail,
+    linkEmail
   } = usePrivy();
 
   const abstractAccount = useMemo(() => {
@@ -45,7 +45,7 @@ export const LinkWallet = (props: {
     return user.linkedAccounts.find(
       (account) =>
         account.type === "cross_app" &&
-        account.providerApp.id === ABSTRACT_PROVIDER_APP_ID,
+        account.providerApp.id === ABSTRACT_PROVIDER_APP_ID
     );
   }, [user]);
 
@@ -69,7 +69,7 @@ export const LinkWallet = (props: {
         size={props.size}
         onClick={() =>
           linkWallet({
-            walletList: ["detected_ethereum_wallets", "wallet_connect"],
+            walletList: ["detected_ethereum_wallets", "wallet_connect"]
           })
         }
       >

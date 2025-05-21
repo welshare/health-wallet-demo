@@ -1,7 +1,7 @@
 import {
   LoginMethodOrderOption,
   NonEmptyArray,
-  PrivyClientConfig,
+  PrivyClientConfig
 } from "@privy-io/react-auth";
 import { baseSepolia, mainnet, sepolia } from "viem/chains";
 import { http, injected } from "wagmi";
@@ -14,21 +14,21 @@ export const wagmiConfig = createConfig({
   connectors: [
     injected(),
     walletConnect({
-      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    }),
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!
+    })
   ],
   ssr: true,
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
-    [baseSepolia.id]: http(),
-  },
+    [baseSepolia.id]: http()
+  }
 });
 
 export const LOGIN_METHODS: PrivyClientConfig["loginMethods"] = [
   "google",
   "email",
-  "apple",
+  "apple"
 ];
 
 export const ABSTRACT_PROVIDER_APP_ID = "cm04asygd041fmry9zmcyn5o5";
@@ -38,19 +38,19 @@ const STRAWBERRY_PROVIDER_APP_ID = "clxva96js0039k9pb3pw2uovx";
 export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     ethereum: {
-      createOnLogin: "off",
-    },
+      createOnLogin: "off"
+    }
   },
   loginMethodsAndOrder: {
     primary: [
-      ...(LOGIN_METHODS as NonEmptyArray<LoginMethodOrderOption>),
+      ...(LOGIN_METHODS as NonEmptyArray<LoginMethodOrderOption>)
       // `privy:${ZORA_PROVIDER_APP_ID}`,
       // `privy:${STRAWBERRY_PROVIDER_APP_ID}`,
       //"wallet_connect",
     ],
-    overflow: [], //"detected_wallets"
+    overflow: [] //"detected_wallets"
   },
   appearance: {
-    showWalletLoginFirst: true,
-  },
+    showWalletLoginFirst: true
+  }
 };

@@ -15,7 +15,7 @@ export const LinkAccounts = () => {
     logout,
     updateEmail,
     connectWallet,
-    linkWallet,
+    linkWallet
   } = usePrivy();
 
   const emailAddress = user?.google?.email || user?.email?.address;

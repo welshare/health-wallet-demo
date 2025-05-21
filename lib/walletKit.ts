@@ -12,8 +12,8 @@ export const supportedNamespaces = (account: Address) => {
       chains: supportedChains.map((ch) => `eip155:${ch}`),
       methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData_v4"],
       events: ["accountsChanged", "chainChanged"],
-      accounts: supportedChains.map((ch) => `eip155:${ch}:${account}`),
-    },
+      accounts: supportedChains.map((ch) => `eip155:${ch}:${account}`)
+    }
   };
 };
 
@@ -25,7 +25,7 @@ export async function initializeWalletKit(
     const core = new Core({
       projectId: walletConnectProjectId,
       customStoragePrefix: "welshare-client-role-", // this allows using walletkit along walletconnect in the same browser
-      name: "Welshare Client Role",
+      name: "Welshare Client Role"
     });
 
     return WalletKit.init({
@@ -34,8 +34,8 @@ export async function initializeWalletKit(
         name: "DAO Governance Wallet", // replace with your own name
         description: "Allows DAO members to vote on proposals", // replace with your desc
         url, // replace with your url
-        icons: [], // add your wallet's icon URL
-      },
+        icons: [] // add your wallet's icon URL
+      }
     });
   } catch (error) {
     console.error("Failed to initialize wallet:", error);

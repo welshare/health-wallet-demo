@@ -59,7 +59,7 @@ export const SigninControl = () => {
         className="p-0.5"
         onClick={() =>
           linkWallet({
-            walletList: ["detected_ethereum_wallets", "wallet_connect"],
+            walletList: ["detected_ethereum_wallets", "wallet_connect"]
           })
         }
       >

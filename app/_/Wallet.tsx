@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { WalletConnectDialog } from "@/components/wallet-connect-dialog";
 import truncateEthAddress from "@/lib/truncate";
@@ -35,7 +35,7 @@ const LoginWithWelshareButton = () => {
 };
 const AvatarAndAddress = ({
   address,
-  fallback,
+  fallback
 }: {
   address?: Address;
   fallback?: string;
@@ -63,10 +63,10 @@ const ConnectedWallet = () => {
       if (!walletKit) return;
       await walletKit.disconnectSession({
         topic,
-        reason: getSdkError("USER_DISCONNECTED"),
+        reason: getSdkError("USER_DISCONNECTED")
       });
     },
-    [walletKit],
+    [walletKit]
   );
 
   const emailAddress =
