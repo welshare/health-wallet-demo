@@ -6,8 +6,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -53,7 +51,7 @@
   --popover-foreground: oklch(0.147 0.004 49.25);
   --primary: oklch(0.68 0.44 287); 
   --primary-foreground: oklch(0.985 0.001 106.423);
-  --secondary: oklch(0.91 0.34 178);
+  --secondary: oklch(0.83 0.13 177.32);
   --secondary-foreground: oklch(0.216 0.006 56.043);
   --muted: oklch(0.97 0.001 106.424);
   --muted-foreground: oklch(0.553 0.013 58.071);
@@ -76,18 +74,19 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+
 }
 
 .dark {
-  --background: oklch(0.147 0.004 49.25);
+  --background: oklch(0.18 0.06 285.23);
   --foreground: oklch(0.985 0.001 106.423);
   --card: oklch(0.216 0.006 56.043);
   --card-foreground: oklch(0.985 0.001 106.423);
   --popover: oklch(0.216 0.006 56.043);
   --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.68 0.44 287); 
+  --primary: oklch(0.68 0.18 287.41); 
   --primary-foreground: oklch(0.985 0.001 106.423);
-  --secondary: oklch(0.91 0.34 178);
+  --secondary: oklch(0.83 0.13 177.32);
   --secondary-foreground: oklch(0.985 0.001 106.423);
   --muted: oklch(0.268 0.007 34.298);
   --muted-foreground: oklch(0.709 0.01 56.259);
@@ -118,5 +117,26 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    --privy-border-radius-sm: var(--radius-sm);
+    --privy-border-radius-md: var(--radius-md);
+    --privy-border-radius-lg: var(--radius-lg);
+    --privy-border-radius-full: var(--radius-xl);
+    --privy-color-background: var(--background);
+    --privy-color-background-2: oklch(0.23 0.22 283);
+    --privy-color-background-3: oklch(0.28 0.30 282);
+    --privy-color-foreground: var(--foreground);
+    --privy-color-foreground-2: var(--foreground);
+    --privy-color-foreground-3: var(--foreground);
+    --privy-color-foreground-4: var(--foreground);
+    --privy-color-foreground-accent: var(--primary);
+    --privy-color-accent: var(--primary);
+    --privy-color-accent-light: var(--primary);
+    --privy-color-accent-lightest: var(--primary);
+    --privy-color-accent-dark: var(--primary);
+    --privy-color-accent-darkest: var(--primary);
+    --privy-color-success: var(--color-chart-2);
+    --privy-color-error: var(--color-chart-5);
+    --privy-color-error-light: var(--color-chart-5);
   }
 }
