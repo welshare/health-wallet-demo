@@ -77,7 +77,7 @@ export const LinkWallet = (props: {
       </Button>{" "}
       <span>or</span>
       <Button onClick={() => createWallet()} size={props.size}>
-        create an embeded wallet
+        create an embedded wallet
       </Button>
       {/* <span>or</span>
       <Button
