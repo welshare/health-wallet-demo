@@ -7,8 +7,8 @@ import { Providers } from "./_/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Long Covid Labs :: Connect Wallet",
-  description: "Register for Your Long Covid Labs Survey Participation Reward"
+  title: "Cerebrum DAO :: Connect Survey Wallet",
+  description: "Create or connect a wallet to prove your survey data"
 };
 
 const fontAleo = Aleo({
