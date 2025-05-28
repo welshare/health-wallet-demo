@@ -39,6 +39,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --text-sm: 1rem;
+  --text-base: 1.25rem;
+  --text-base--line-height: calc(1.5 / 1);
 }
 
 :root {
@@ -49,7 +52,7 @@
   --card-foreground: oklch(0.147 0.004 49.25);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: rgb(236 254 129); 
+  --primary: rgb(236, 254, 129); 
   --primary-foreground: var(--background);
   --secondary: rgb(151 134 255);
   --secondary-foreground: oklch(0.216 0.006 56.043);
@@ -74,12 +77,11 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
-
 }
 
 .dark {
   --background: oklch(0.18 0.06 285.23);
-  --foreground: oklch(0.985 0.001 106.423);
+  --foreground: rgb(255 255 255);
   --card: oklch(0.216 0.006 56.043);
   --card-foreground: oklch(0.985 0.001 106.423);
   --popover: oklch(0.216 0.006 56.043);
@@ -118,6 +120,10 @@
   body {
     @apply bg-background text-foreground;
 
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-aleo);
+    }
+    
     --privy-border-radius-sm: var(--radius-sm);
     --privy-border-radius-md: var(--radius-md);
     --privy-border-radius-lg: var(--radius-lg);

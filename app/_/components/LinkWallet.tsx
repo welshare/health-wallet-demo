@@ -9,7 +9,6 @@ import {
 import clsx from "clsx";
 import { useMemo } from "react";
 import { useAccount, useConnect, useConnectors } from "wagmi";
-import { ABSTRACT_PROVIDER_APP_ID } from "../privy/config";
 
 export const LinkWallet = (props: {
   className?: string;
@@ -44,8 +43,7 @@ export const LinkWallet = (props: {
 
     return user.linkedAccounts.find(
       (account) =>
-        account.type === "cross_app" &&
-        account.providerApp.id === ABSTRACT_PROVIDER_APP_ID
+        account.type === "cross_app" && account.providerApp.id === "0x"
     );
   }, [user]);
 

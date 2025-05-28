@@ -31,10 +31,6 @@ export const LOGIN_METHODS: PrivyClientConfig["loginMethods"] = [
   "apple"
 ];
 
-export const ABSTRACT_PROVIDER_APP_ID = "cm04asygd041fmry9zmcyn5o5";
-export const ZORA_PROVIDER_APP_ID = "clpgf04wn04hnkw0fv1m11mnb";
-const STRAWBERRY_PROVIDER_APP_ID = "clxva96js0039k9pb3pw2uovx";
-
 export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     ethereum: {
@@ -43,14 +39,14 @@ export const privyConfig: PrivyClientConfig = {
   },
   loginMethodsAndOrder: {
     primary: [
-      ...(LOGIN_METHODS as NonEmptyArray<LoginMethodOrderOption>)
-      // `privy:${ZORA_PROVIDER_APP_ID}`,
-      // `privy:${STRAWBERRY_PROVIDER_APP_ID}`,
-      //"wallet_connect",
+      ...(LOGIN_METHODS as NonEmptyArray<LoginMethodOrderOption>),
+      "detected_ethereum_wallets",
+      "wallet_connect"
+      // `privy:${WELSHARE_PROVIDER_APP_ID}`,
     ],
     overflow: [] //"detected_wallets"
   },
   appearance: {
-    showWalletLoginFirst: true
+    showWalletLoginFirst: false
   }
 };

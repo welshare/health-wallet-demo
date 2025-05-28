@@ -4,7 +4,6 @@ import truncateEthAddress from "@/lib/truncate";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
-import { LOGIN_METHODS } from "../privy/config";
 import { EthAvatar } from "./EthAvatar";
 import { LinkWallet } from "./LinkWallet";
 
@@ -18,10 +17,10 @@ export const SigninButton = (props: ButtonProps) => {
     return (
       <Button
         variant={props.variant || "default"}
-        onClick={() => login({ loginMethods: LOGIN_METHODS })}
+        onClick={() => login()}
         disabled={!ready}
       >
-        Sign in with an email address
+        Connect or Create Wallet
       </Button>
     );
   }

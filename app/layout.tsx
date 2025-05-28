@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Aleo, Roboto } from "next/font/google";
 
 import { Separator } from "@/components/ui/separator";
 import { Header } from "./_/components/Header";
@@ -11,24 +11,14 @@ export const metadata: Metadata = {
   description: "Register for Your Long Covid Labs Survey Participation Reward"
 };
 
-const fontSterling = localFont({
-  src: [
-    {
-      path: "../public/fonts/FT-Sterling-Regular.otf",
-      weight: "400",
-      style: "normal"
-    },
-    {
-      path: "../public/fonts/FT-Sterling-Medium.otf",
-      weight: "500",
-      style: "normal"
-    },
-    {
-      path: "../public/fonts/FT-Sterling-Semi-Bold.otf",
-      weight: "700",
-      style: "normal"
-    }
-  ]
+const fontAleo = Aleo({
+  variable: "--font-aleo",
+  subsets: ["latin"]
+});
+
+const fontRoboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"]
 });
 
 export default function RootLayout({
@@ -37,7 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={fontSterling.className} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${fontRoboto.className} ${fontAleo.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <div className="md:container md:mx-auto p-4 sm:px-6 lg:px-8">
           <Providers>
