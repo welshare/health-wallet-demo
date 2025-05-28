@@ -28,7 +28,7 @@ export const wagmiConfig = createConfig({
 export const LOGIN_METHODS: PrivyClientConfig["loginMethods"] = [
   "google",
   "email",
-  "apple"
+  "discord"
 ];
 
 export const privyConfig: PrivyClientConfig = {

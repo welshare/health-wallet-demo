@@ -27,7 +27,7 @@ export const SigninButton = (props: ButtonProps) => {
 };
 
 export const SigninControl = () => {
-  const { ready, authenticated, user, linkWallet } = usePrivy();
+  const { ready, authenticated, user, linkWallet, linkEmail } = usePrivy();
   const { isConnected } = useAccount();
   const { wallets, ready: walletsReady } = useWallets();
   if (!ready) return null;
@@ -46,13 +46,20 @@ export const SigninControl = () => {
     user?.email?.address || user?.apple?.email || user?.google?.email;
   return (
     <p className="w-full">
-      You&apos;re signed in as{"  "}{" "}
-      <span className="font-mono">{emailAddress}</span> {"  "}
-      using{"  "}
+      You&apos;re signed in
+      {emailAddress ? (
+        <span>
+          {" "}
+          as <span className="font-mono">{emailAddress}</span> using
+        </span>
+      ) : (
+        " as"
+      )}
+      {"  "}
       <EthAvatar address={wallet.address} className="inline" />
       {"  "}
       {truncateEthAddress(wallet.address as Address, 7, 7)}
-      {"  "}(
+      {"  "}
       <Button
         size="sm"
         variant="ghost"
@@ -65,7 +72,11 @@ export const SigninControl = () => {
       >
         {wallet.meta.name}
       </Button>
-      )
+      {!emailAddress && (
+        <Button className="mt-2" onClick={() => linkEmail()}>
+          connect a mail account
+        </Button>
+      )}
     </p>
   );
 };

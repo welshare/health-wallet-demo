@@ -21,9 +21,10 @@ export default function Home() {
         </div>
         <div className="space-y-4">
           <p>
-            To selectively disclose and reuse the information you're providing
-            during the study, you're going to need a cryptographic keypair, also
-            know as an account (or referred to as "wallet" sometimes).
+            To selectively disclose and reuse the information you&apos;re
+            providing during the study, you&apos;re going to need a
+            cryptographic keypair, also know as an account (or referred to as
+            &quot;wallet&quot; sometimes).
           </p>
           <p>
             While being usable as a fully featured crypto wallet, signing up
